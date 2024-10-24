@@ -1,0 +1,35 @@
+
+
+.main{
+    background-image: url(../imagenes/imagen-fondo.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 42.5em;
+}
+.contenedor-tabla {
+    overflow: auto;
+    display:block;
+    height: 25.5em;
+
+  }
+.contenedor-portada{
+    overflow: auto;
+    display:block;
+    height: 30em;
+}
+
+
+
+.oro{
+    background-color: rgb(212, 175, 55) !important;
+}
+
+.plata{
+    background-color: rgb(192, 192, 192) !important;
+}
+
+.bronce{
+    background-color: rgb(205, 127, 50) !important;
+}
+
+

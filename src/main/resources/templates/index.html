@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="robots" content="noindex">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <title>Tabla de Tiempos - Gran turismo 7</title>
+</head>
+
+<body class="fluid-container bg-dark">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid d-flex justify-content-center justify-content-lg-between">
+
+            <div class="mb-2">
+                <img th:src="@{imagenes/logo-gran-turismo-7.png}" width="300em">
+            </div>
+
+
+
+            <div class="mt-2 d-none" id="contenedor-menu">
+                <ul class="navbar-nav me-auto mb-lg-0">
+                    <li class="m-2"><input id="buscador-piloto" class="form-control me-2" type="text" placeholder="Piloto" aria-label="Piloto"></li>
+                    <li class="m-2"><input id="buscador-coche" class="form-control me-2" type="text" placeholder="Coche" aria-label="Coche">
+                    </li>
+                    <li class="m-2">
+                        <select class="form-select" aria-label="Default select example" id="buscador-circuito">
+                            <option value='' hidden>Circuito</option>
+                            <option value=''>Ninguno</option>
+                            <!--<option value=''>Ninguno</option>-->
+                        </select>
+                    </li>
+                    <li class=" m-2">
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-danger mx-1" id="buscador-boton">Buscar</button>
+                            <button class="btn btn-outline-warning mx-1" data-bs-toggle="modal" data-bs-target="#ModalAñadirTiempo" id="modal-tiempo">
+                                Tiempo</button>
+                            <button class="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#ModalAñadirPiloto">
+                                Piloto</button>
+                        </div>
+                        
+                        
+                       </li>
+                    <li class="m-2">
+                        <div class="d-flex justify-content-start align-items-end">
+                            <small class="text-secondary">Hola <span class="text-light" id="Saludo"></span>, recuerda conducir con cuidado en la vida real.</small>
+                            
+                        </div>
+                    </li>
+                    <li class="m-2">
+                        <div class="d-flex justify-content-end align-items-end">
+                            
+                            <small style="cursor:pointer;" class="text-secondary" id="CerrarSesion"><a>X Cerrar Sesión</a></small>
+                        </div>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </nav>
+
+    <div class="pt-5 px-1 p-lg-5 main ">
+
+        <div class="bg-dark contenedor-portada pb-5" id="contenedor-portada">
+
+            <div class="reloj d-flex flex-column justify-content-center align-items-center mt-5" id="reloj-1">
+                <div class="caja-fecha p-2 text-light mt-3">
+                    <span id="diaSemana" class="diaSemana"></span>
+                    <span id="dia" class="dia"></span>
+                    <span>de</span>
+                    <span id="mes" class="mes"></span>
+                    <span>del</span>
+                    <span id="anio" class="anio"></span>
+                </div>
+                <div class="caja-hora p-2 mt-1 text-light display-1"><span class="horas"></span><span
+                        class="separador-reloj mx-2">:</span><span class="minutos"></span><span
+                        class="separador-reloj mx-2">:</span><span class="segundos"></span> <span class="ampm"></span>
+                </div>
+            </div>
+
+
+            <!--Login-->
+            <div class="login d-flex flex-column justify-content-center align-items-center mt-5 px-5 d-none" id="caja-login">
+                <div class="px-lg-5 mx-lg-5">
+                    <div class="input-group px-lg-5 mx-lg-5">
+                        <span class="input-group-text">&#x1f417;</span>
+                        <input id="usuario" class="form-control" type="text" placeholder="Piloto" aria-label="Piloto" name="piloto">
+                    </div>
+                    <div class="input-group mt-3 px-lg-5 mx-lg-5">
+                        <span class="input-group-text">&#128273;</span>
+                        <input id="pass" class="form-control" type="password" placeholder="Llave" aria-label="LLave" name="password-piloto">
+                    </div>
+                    <div class="input-group mt-3 px-lg-5 mx-lg-5 d-flex flex-column justify-content-center">
+                        <span id="mensaje-error-usuario" class="text-warning text-center d-none"><small>El piloto no es valido</small></span>
+                        <span id="mensaje-error-pass"  class="text-warning text-center d-none"><small>La llave no es valida</small></span>
+                        <span id="msepu"  class="text-danger text-center d-none"><small>El usuario y contraseña no validos</small></span>
+                        <span class="text-warning text-center d-none"><small></small></span>
+                    </div>
+                    <div class="input-group mt-3 px-lg-5 mx-lg-5 d-flex justify-content-center">
+                        <button id="botonLogin" class="btn btn-outline-success mt-3">Arrancamos con todo</button>
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+
+   
+        <!--Tabla Principal-->
+    <div class="bg-dark contenedor-tabla d-none" id="contenedor-tabla">
+        <table class="table table-dark table-hover small table-responsive text-center tabla d-none" id="tabla">
+            <thead>
+                <tr>
+                    <th>Piloto</th>
+                    <th>Circuito</th>
+                    <th>Coche</th>
+                    <th>Tiempos</th>
+                    <th>Diferencias</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpo-tabla">
+                
+            </tbody>
+        </table>
+        <div class="reloj d-flex flex-column justify-content-center align-items-center" id="reloj-2">
+            <div class="caja-fecha p-2 text-light mt-3">
+                <span id="diaSemana" class="diaSemana"></span>
+                <span id="dia" class="dia"></span>
+                <span>de</span>
+                <span id="mes" class="mes"></span>
+                <span>del</span>
+                <span id="anio" class="anio"></span>
+            </div>
+            <div class="caja-hora p-2 mt-1 text-light display-1"><span class="horas"></span><span
+                    class="separador-reloj mx-2">:</span><span class="minutos"></span><span
+                    class="separador-reloj mx-2">:</span><span class="segundos"></span> <span class="ampm"></span>
+            </div>
+            <div class="d-flex justify-content-center mt-5 mt-lg-4">
+                <h2 class="text-white">No Existen tiempos para ese piloto, coche y circuito.</h2>
+            </div>
+            <div class="d-flex justify-content-center mt-5 mt-lg-4">
+                <img th:src="@{imagenes/logo-gran-turismo-7.png}" class="img-fluid" width="200em">
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+    
+    <!--Modal de añadir Piloto-->
+    <div class="modal fade" id="ModalAñadirPiloto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+              <h5 class="modal-title" id="titulo-piloto">Añadir Piloto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="add-piloto" placeholder="Piloto" maxlength="10">
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="add-llave" placeholder="Llave" maxlength="10" name="password-piloto">
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="add-llave-conf" placeholder="Comfirma la Llave" maxlength="10" name="password-piloto-2">
+                </div>
+                <div class="mb-3 d-flex flex-column justify-content-center">
+                    <small id="pass-no-valido" class="text-center text-warning d-none">Las contraseñas no coinciden</small>
+                    <small id="faltan-datos-piloto" class="text-center text-warning d-none">Faltan datos por rellenar</small>
+                    <small id="minimo-datos-piloto" class="text-center text-warning d-none">Minimo 3 caracteres máximo 10</small>
+                    <small id="piloto-guardado" class="text-center text-success d-none">Piloto Guardado Correctamente</small>
+                    <small id="piloto-no-guardado" class="text-center text-warning d-none">El piloto no se ha podido guardar</small>
+                    <small id="piloto-repetido" class="text-center text-warning d-none">El piloto esta repetido</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button id="boton-cambiar-pass" type="button" class="btn btn-outline-secondary">Cambiar Contraseña</button>
+              <button id="confirmar-piloto" type="button" class="btn btn-outline-success">Confirmar Piloto</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Modal de añadir Tiempo-->
+    <div class="modal fade" id="ModalAñadirTiempo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+              <h5 class="modal-title" id="tituloModalTiempos">Añadir Tiempo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+                <div class="mb-3">
+                <label for="add-circuito" class="text-secondary">Circuito</label>
+                  <select class="form-control" aria-label="Default select example" id="add-circuito">
+                     <option value='' hidden>Circuito</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                    <input type="pass" class="form-control" id="add-coche" placeholder="Coche" name="coche">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control d-none" id="add-id" placeholder="">
+                </div>
+                
+            
+                <div class="mb-3 d-flex flex-row" id ="caja-crono">
+                    <input type="text" class="form-control" placeholder="Minuto" id="minuto" maxlength="2" name="minuto">
+                    <input type="text" class="form-control mx-1" placeholder="Segundo" id="segundo" maxlength="2" name="segundo">
+                    <input type="text" class="form-control" placeholder="Milesima" id="milesima" maxlength="3" name="milesima">
+                </div>
+
+                <!--Foto-->
+                <div class="mb-3">
+                    <input id="subirFoto" class="form-control"  type="file" accept="image/*" placeholder="Subir Fotografia">
+                </div>
+                <div class="mb-3 d-flex justify-content-center d-none" id="caja-foto" >
+                    <img id="foto-tiempos" accept="image/*" class="card-img-bottom" alt="Foto No Cargada"></img>
+                </div>
+
+                <div class="mb-3 d-flex flex-column justify-content-center">
+                    <small id="faltanDatosAddTiempo" class="text-warning d-none">Faltan datos por completar</small>
+                    <small id="erroDatosAddTiempo" class="text-warning d-none">Ha habido un error al guardar el tiempo</small>
+                    <small id="completoDatosAddTiempo" class="text-success d-none">Tiempo guardado correctamente</small>
+                    
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+              <button id="borrar-tiempo" type="button" class="btn btn-outline-danger d-none">Borrar Tiempo</button>
+              <button id="confirmar-tiempo" type="button" class="btn btn-outline-success d-none">Confirmar Nuevo Tiempo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script th:src="@{js/reloj.js}"></script>
+    <script th:src="@{js/buscador.js}"></script>
+    <script th:src="@{js/addTiempo.js}"></script>
+    <script th:src="@{js/addPiloto.js}"></script>
+    <script th:src="@{js/rellenarListas.js}"></script>
+    <script th:src="@{js/botonesTabla.js}"></script>
+    <script th:src="@{js/login.js}"></script>
+    
+
+</body>
+
+</html>
