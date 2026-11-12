@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="docs/screenshot.jpeg" alt="Tabla de Tiempos" width="860">
-</p>
-
 <h1 align="center">Tabla de Tiempos</h1>
 
 <p align="center">
@@ -9,10 +5,12 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/github/v/release/adrianllorian/TablaTiempos?style=flat-square&label=versi%C3%B3n" alt="Versión">
   <img src="https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=openjdk&logoColor=white" alt="Java 17">
   <img src="https://img.shields.io/badge/Spring%20Boot-2.5.6-6DB33F?style=flat-square&logo=springboot&logoColor=white" alt="Spring Boot">
-  <img src="https://img.shields.io/badge/H2-embedded-blue?style=flat-square" alt="H2">
+  <img src="https://img.shields.io/badge/H2-003B57?style=flat-square&logo=databricks&logoColor=white" alt="H2">
   <img src="https://img.shields.io/badge/Bootstrap-5-7952B3?style=flat-square&logo=bootstrap&logoColor=white" alt="Bootstrap">
+  <img src="https://img.shields.io/badge/licencia-MIT-blue?style=flat-square" alt="MIT">
 </p>
 
 <p align="center">
@@ -22,10 +20,16 @@
 </p>
 
 <p align="center">
-  <strong>Sin base de datos externa · Se abre solo en el navegador · Listo para usar</strong>
+  <strong>Java 17+ · 41,5 MB · Windows / Linux / macOS</strong>
 </p>
 
 ---
+
+## Vista previa
+
+<p align="center">
+  <img src="docs/screenshot.jpeg" alt="Tabla de Tiempos" width="860">
+</p>
 
 ## Características
 
@@ -43,25 +47,53 @@
 - **H2 embebido**: la base de datos se crea sola, sin instalar MySQL.
 - Diseño responsive con Bootstrap.
 
-## Descargar y ejecutar
+## Descarga
 
-1. Descarga `tabla-tiempos.jar` desde **Releases**.
+Descarga siempre la última versión desde este enlace fijo:
+
+**[Tabla de Tiempos (última versión)](https://github.com/adrianllorian/TablaTiempos/releases/latest/download/tabla-tiempos.jar)**
+
+- Archivo: `tabla-tiempos.jar`
+- Tamaño: 41,5 MB
+- Requisito: **Java 17 o superior**
+- Plataforma: Windows, Linux y macOS
+- No necesita base de datos externa: H2 va incluido.
+
+### Verificar la descarga
+
+SHA-256 del JAR:
+
+```text
+2DF05F96B33A4C8B837E3F5911F5F51692169FA0CBD1287548AD7BF048D9A85E
+```
+
+Para comprobarlo en PowerShell:
+
+```powershell
+Get-FileHash ".\tabla-tiempos.jar" -Algorithm SHA256
+```
+
+## Ejecutar
+
+1. Descarga `tabla-tiempos.jar` y colócalo en una carpeta donde puedas escribir.
 2. Necesitas **Java 17 o superior** (<https://adoptium.net>).
-3. Haz doble clic en el JAR, o ejecútalo desde una consola:
+3. Arranca con doble clic en el JAR o desde una consola:
 
-   ```bash
-   java -jar tabla-tiempos.jar
-   ```
+```bash
+java -jar tabla-tiempos.jar
+```
 
-4. El navegador se abre solo. Si no se abre, entra en <http://localhost:8080>.
+4. El navegador se abre solo. Si no se abre, entra en:
 
-> La aplicación crea una carpeta **`data/` junto al JAR**, da igual desde qué
-> carpeta lo ejecutes. Ahí van la base de datos y las fotos. Usa una carpeta
-> donde puedas escribir, no `Program Files`.
+```text
+http://localhost:8080
+```
 
-En Windows también puedes usar `start.bat` y en Linux/macOS `start.sh`.
+En Windows también puedes usar `start.bat`; en Linux / macOS, `start.sh`.
 
-### Configuración inicial
+Para detener el servidor, pulsa `Ctrl + C` en la terminal.
+
+### Primer arranque
 
 La primera vez verás la pantalla de **Configuración inicial**:
 
@@ -77,10 +109,8 @@ Después, entra con el administrador y prepara la aplicación:
 
 Cada piloto inicia sesión con su cuenta y registra tiempos con **Tiempo**.
 
-### ¿Y si quiero empezar de cero?
-
-Con la aplicación parada, borra la carpeta **`data/`** que está junto al JAR.
-En el siguiente arranque volverá a pedir crear el administrador.
+Si quieres empezar de cero, para la aplicación y borra la carpeta `data/` que
+está junto al JAR. En el siguiente arranque volverá a pedir crear el administrador.
 
 ## Roles
 
@@ -98,14 +128,6 @@ En el siguiente arranque volverá a pedir crear el administrador.
 
 > Un circuito o un piloto **no se pueden borrar** si tienen tiempos
 > registrados. Tampoco se puede borrar una cuenta de administrador.
-
-## Primeros pasos recomendados
-
-1. Crear el administrador y elegir el título/logo/fondo en el primer arranque.
-2. Crear los circuitos desde **Circuitos**.
-3. Inscribir a los pilotos desde **Piloto**.
-4. Cada piloto entra con su usuario y añade sus tiempos.
-5. Selecciona un circuito en **Filtros** y la tabla se actualiza sola.
 
 ## Datos y copias de seguridad
 
@@ -128,6 +150,7 @@ JAR: siempre usa el `data/` que está a su lado.
 - **Reset**: con la aplicación parada, borra la carpeta `data/`.
 - **Ubicación**: usa una carpeta donde puedas escribir (Escritorio,
   Documentos, un USB...). En `Program Files` no se puede crear `data/`.
+- No subas la carpeta `data/` a GitHub.
 
 ## Configuración
 
@@ -150,7 +173,7 @@ set SERVER_PORT=9090
 java -jar tabla-tiempos.jar
 ```
 
-En Linux/macOS:
+En Linux / macOS:
 
 ```bash
 SERVER_PORT=9090 java -jar tabla-tiempos.jar
@@ -172,19 +195,36 @@ mvnw.cmd clean package
 
 El JAR se genera en `target/tabla-tiempos.jar`.
 
-## Publicar una release
+### Publicar una release
 
 Las releases se publican a mano, para adjuntar siempre el fichero que se ha
 probado:
 
-1. Compila el JAR (apartado anterior).
+1. Compila el JAR.
 2. En GitHub, entra en **Releases → Draft a new release**.
-3. Crea el tag de la versión (por ejemplo `v1.4.0`) y adjunta
-   `tabla-tiempos.jar`.
+3. Crea el tag de la versión (por ejemplo `v1.4.0`) y adjunta `tabla-tiempos.jar`.
 4. Publica la release.
 
 El workflow `build.yml` solo comprueba que el proyecto compila en cada push y
 pull request; no publica nada.
+
+## Estructura del proyecto
+
+```text
+TablaTiempos/
+├── src/main/java/            # backend Spring Boot
+├── src/main/resources/
+│   ├── static/               # CSS, JS e imágenes
+│   ├── templates/            # vistas Thymeleaf
+│   └── application.properties
+├── docs/screenshot.jpeg
+├── mvnw / mvnw.cmd
+├── start.bat
+├── start.sh
+├── pom.xml
+├── LICENSE
+└── README.md
+```
 
 ## Tecnologías
 
@@ -203,7 +243,14 @@ pull request; no publica nada.
 - Si la vas a exponer a Internet, ponla detrás de un proxy con HTTPS y cambia
   la contraseña del administrador.
 - Las contraseñas se guardan cifradas con BCrypt.
+- No subas la carpeta `data/` a GitHub.
 
 ## Licencia
 
-MIT. Consulta [LICENSE](LICENSE).
+Distribuido bajo **MIT License**. Consulta [LICENSE](LICENSE).
+
+---
+
+<p align="center">
+  Copyright © 2026 Adrian Llorian
+</p>
